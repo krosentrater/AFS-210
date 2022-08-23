@@ -29,10 +29,7 @@ Data2.add("Alpha")
 print(Data2)
 
             ###?Data3###
-reversed = []
-for i in Data3:
-    reversed.insert(0, i)
-print(reversed)
+Data3.reverse()
 Data3[1] = "B"
 Data3.pop()
 print(Data3)
@@ -40,7 +37,10 @@ print(Data3)
             ###?Data4###
 Data4.update({ "active":"False" })
 Data4.update({ "address":"123 West Main Street" })
+# Data4["active"] = False
+# Data4["address"] = "123 West Main Street"
 hourlyWage = Data4.get("hourly_wage")
 salary = format(hourlyWage * 40, ',.2f')
-print(f"The weekly salary for Joe is: $",salary)
+# print(f"The weekly salary for Joe is: $",salary)
+print(f'The weekly salary for Joe is : ${(Data4["hourly_wage"]*40):,.2f}')
 print(Data4)
