@@ -3,9 +3,10 @@ class Node:
         self.data = data
         self.next = None
 
+
 class Stack:
     def __init__(self):
-        self.top = []
+        self.top = None
         self.count = 0
 
     def push(self, data):
@@ -51,41 +52,97 @@ class Stack:
         for node in self.iter():
             myStr += str(node)+ " "
         return myStr
+    
+    def init(self, str):
+        if (len(str) == 0):
+            raise Exception("Invalid Input.")
 
+        for i in str:
+            self.push(i)
 
 
 
 class Queue:
     def __init__(self):
-        self.queue = []
+        self.head = None
+        self.tail = None
         self.count = 0
-        
+    
     def enqueue(self, data):
-        new_node = Node(data) # Creates new node
-        self.queue.insert(0, new_node) # Inserts every new node in the end of the queue
-        self.count += 1 # Increments counter
+        new_node = Node(data)
+        if (self.head == None):
+            self.head = new_node
+            self.tail = new_node
+            self.count += 1
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+            self.count += 1
 
     def dequeue(self):
-        self.count -= 1 # Decrements counter
-        return self.queue.pop() # Removes the last item from the queue
+        if (self.head == None):
+            raise Exception("Queue is empty.")
+        elif (self.count == 1):
+            val = self.head.data
+            self.head = None
+            self.tail = None
+            self.count -= 1
+            return val
+        else:
+            val = self.head.data
+            self.head = self.head.next
+            self.count -= 1
+            return val
+
+    def isEmpty(self):
+        if (self.head is None):
+            return True
+        else:
+            return False
 
     def size(self):
         return self.count
 
-    def isEmpty(self):
-        if (self.queue == None) and (self.count == 0):
-            return True
-        else:
-            return False
-    
     def peek(self):
-        indexOfLastItem = self.count
-        return self.queue[indexOfLastItem].data
+        return self.head.data
 
+    def iter(self):
+        current = self.head
+        while current:
+            val = current.data
+            current = current.next
+            yield val
 
+    def __str__(self):
+        myStr = ""
+        for node in self.iter():
+            myStr += str(node)+ " "
+        return myStr
     
-    
+    def init(self, str):
+        if (len(str) == 0):
+            raise Exception("Invalid Input.")
 
-queue = Queue()
+        for i in str:
+            self.enqueue(i)
 
-stack = Stack()
+def isPalindrome(val):
+    stack = Stack()
+    queue = Queue()
+
+    stack.init(val)
+    queue.init(val)
+
+    stackString = stack.__str__()
+    queueString = queue.__str__()
+
+    if (stackString == queueString):
+        return True
+    else:
+        return False 
+
+
+print(isPalindrome("racecar"))
+print(isPalindrome("noon"))
+print(isPalindrome("python"))
+print(isPalindrome("madam"))
