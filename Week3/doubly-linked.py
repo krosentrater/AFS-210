@@ -197,6 +197,6 @@ words.add("!")
 print(words)
 indexOfWith = words.indexOf("with")
 print(indexOfWith)
-words.__setitem__(5, "us")
+words[words.indexOf("you")] = "us"
 words.addAtIndex('all', 6)
 print(words)
