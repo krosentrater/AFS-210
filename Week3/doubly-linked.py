@@ -48,11 +48,16 @@ class DoublyLinkedList:
     def addLast(self, data) -> None:
         # Add a node at the end of the list
         node = Node(data)
+        # Adds conditional to see if there is anything on the list already. If not, set node to both head and tail. If not, contiune with previous code. 
+        if (self.head == None):
+            self.head = node
+            self.tail = node
+        else:
         # Current tail.next needs to point towards the new node. New node has to point previous towards the tail. Tail now points to the new node. Increment the counter. 
-        self.tail.next = node
-        node.prev = self.tail
-        self.tail = node
-        self.count += 1
+            self.tail.next = node
+            node.prev = self.tail
+            self.tail = node
+            self.count += 1
 
 
 
@@ -66,10 +71,10 @@ class DoublyLinkedList:
             raise Exception("Index out of range.") 
         elif (index < 0): #? If index is negative
             raise Exception("Index can't be negative.")
-        elif (index == self.count): #? If index is equal to the length of the list, add the item at the end.
-            self.addLast(data)
         elif (index == 0): #? If the index is equal to index of 0, add the the beginning of the list. 
             self.addFirst(data)
+        elif (index == self.count): #? If index is equal to the length of the list, add the item at the end.
+            self.addLast(data)
         else: #? If none of the above apply, then add at the current position.
             # Create variables for keeping track of the positions with pointers
             curr = self.head
@@ -77,12 +82,12 @@ class DoublyLinkedList:
             for n in range(index): #? Loops through the list positions
                 prev = curr 
                 curr = curr.next
-                
-        new_node.next = curr 
-        new_node.prev = prev 
-        curr.prev = new_node
-        prev.next = new_node
-        self.count += 1
+
+            new_node.next = curr
+            new_node.prev = prev
+            curr.prev = new_node
+            prev.next = new_node
+            self.count += 1
 
 
     def indexOf(self, data):
@@ -179,7 +184,8 @@ class DoublyLinkedList:
 
 
 words = DoublyLinkedList()
-words.addFirst("May")
+
+words.add("May")
 words.add("the")
 words.add("Force")
 words.add("be")
@@ -187,9 +193,11 @@ words.add("with")
 words.add("you")
 words.add("!")
 
-print(words)
+
+# print(words)
 indexOfWith = words.indexOf("with")
-print(indexOfWith)
+# print(indexOfWith)
 words.__setitem__(5, "us")
-words.addAtIndex("all", 6)
+print(words)
+words.addAtIndex('all', 5)
 print(words)
