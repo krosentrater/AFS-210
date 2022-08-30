@@ -73,7 +73,7 @@ class DoublyLinkedList:
             raise Exception("Index can't be negative.")
         elif (index == 0): #? If the index is equal to index of 0, add the the beginning of the list. 
             self.addFirst(data)
-        elif (index == self.count): #? If index is equal to the length of the list, add the item at the end.
+        elif (index == (self.count + 1)): #? If index is equal to the length of the list, add the item at the end.
             self.addLast(data)
         else: #? If none of the above apply, then add at the current position.
             # Create variables for keeping track of the positions with pointers
@@ -194,10 +194,9 @@ words.add("you")
 words.add("!")
 
 
-# print(words)
-indexOfWith = words.indexOf("with")
-# print(indexOfWith)
-words.__setitem__(5, "us")
 print(words)
-words.addAtIndex('all', 5)
+indexOfWith = words.indexOf("with")
+print(indexOfWith)
+words.__setitem__(5, "us")
+words.addAtIndex('all', 6)
 print(words)
