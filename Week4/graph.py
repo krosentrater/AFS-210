@@ -1,16 +1,15 @@
 
 graph = { 
-    'A': ['B', 'C', 'D', 'E', 'F'],
-    'B': ['C', 'E'],
-    'C': ['D'],
-    'D': ['E'],
-    'E': ['F'],
-    'F': ['G', 'H', 'C'],
-    'G': ['F', 'H'],
-    'H': ['G', 'F'],
-    'I': [],
+    'A': {'B':2, 'C':1, 'D':3, 'E':9, 'F':20},
+    'B': {'C':4, 'E':3},
+    'C': {'D':8},
+    'D': {'E':5},
+    'E': {'F':5},
+    'F': {'G':2, 'H':2, 'C':2},
+    'G': {'F':1, 'H':6},
+    'H': {'G':8, 'F':9},
+    'I': {}
 }
-
 
 # finds shortest path between 2 nodes of a graph using BFS
 def breadth_first_search(graph, start, goal):
@@ -68,7 +67,6 @@ def dijsktra(graph, initial, end):
                 current_shortest_weight = shortest_paths[next_node][1]
                 if current_shortest_weight > weight:
                     shortest_paths[next_node] = (current_node, weight)
-
         next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
         if not next_destinations:
             return "Route Not Possible"
@@ -78,14 +76,20 @@ def dijsktra(graph, initial, end):
     # Work back through destinations in shortest path
     path = []
     while current_node is not None:
+        # print(weight_to_current_node)
         path.append(current_node)
         next_node = shortest_paths[current_node][0]
         current_node = next_node
     # Reverse path
     path = path[::-1]
-    return path
+    return path, weight_to_current_node
 
 shortestPath = breadth_first_search(graph, 'A', 'H')
 print("Shortest path between A and H is: ", shortestPath)
-cheaptestPath = dijsktra(graph, graph['A'], graph['H'])
-print("Cheapest path between A and H is: ", cheaptestPath)
+
+init = 'A'
+destination = 'H'
+cheapestPath = dijsktra(graph, init, destination)
+print("Cheapest path between A to H is: ", cheapestPath[0])
+
+print("Cost of travel between A to H is: ", cheapestPath[1])
