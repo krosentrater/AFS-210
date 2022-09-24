@@ -1,3 +1,4 @@
+from random import randint
 
 class Song:
     def __init__(self,title,artist):
@@ -60,13 +61,19 @@ class Dll:
         prev = current
         current = current.next
 
+    def skip(self):
+        current = self.head
+        val = current.next
+        return val
+        
 
     def play(self):
         return self.head.title + ' by ' + self.head.artist
 
     def print(self):
         for node in self.iter():
-            print(node)
+            print(' - ', node)
+
     
     def iter(self):
         current_title = self.head
@@ -106,6 +113,7 @@ link.add('Carrion', 'Parkway Drive')
 link.add('The City Sleeps in Flames', 'Scary Kids Scaring Kids')
 
 
+
 while True:
     menu()
     choice = int(input())
@@ -117,15 +125,17 @@ while True:
         print("New Song Added to Playlist")
 
     elif choice == 2:
+        print("You list currently includes: ")
+        current_list = link.print()
         link.delete(input('Title to remove: '))
-        print("Song Removed to Playlist")
+        print("Song Removed from Playlist")
 
     elif choice == 3: # DONE
         play = link.play()
         print("Playing....", play)
 
     elif choice == 4:
-        skip = link.print()
+        skip = link.skip()
         print("Skipping....", skip)
 
     elif choice == 5:
@@ -134,9 +144,8 @@ while True:
         print("Replaying....") 
 
     elif choice == 6:
-        # Randomly shuffle the playlist and play the first song
-        # Display song name that is now playing
         print("Shuffling....") 
+        shuffle = link.shuffle()
 
     elif choice == 7:
         # Display the song name and artist of the currently playing song
