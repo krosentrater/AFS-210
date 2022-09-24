@@ -26,61 +26,57 @@ class Song:
         
     def __gt__(self, other): #greater than
         return ((self.title, self.artist) < (other.title, other.artist))
-        
 
-class DoublylinkedList:
+
+class Dll:
     def __init__(self):
-        self.tail = None
         self.head = None
-    
-    def addFirst(self, title, artist) -> None:
-        new_song = Song(title, artist)
-        if (self.head == None):
-            self.head = new_song
-            self.tail = new_song
-            print("41", self.head)
+        self.tail = None
+
+    def add(self, title, artist):
+        node = Song(title, artist)
+        if (self.head is None):
+            self.head = node
+            self.tail = node
         else:
-            new_song.next = self.head
-            self.head.prev = new_song
-            self.head = new_song
-            print('46',self.head)
+            self.tail.next = node
+            node.prev = self.tail
+            self.tail = node
     
-    def remove(self, title) -> None:
+    def delete(self, title):
         current = self.head
         prev = self.head
         while current:
-            if current.title == title:
-                if current == self.tail:
-                    prev.next = None
-                    self.tail = prev
-                    print('56',self.head)
-                elif current == self.head:
-                    current.next.prev = None
-                    self.head = current.next
-                    print('59',self.head)
-                else:
-                    prev.next = current.next
-                    current.next = prev
-                    print('62',self.head)
-                return
-            prev = current
-            current = current.next
+            if (current.title == title):
+                prev.next = None
+                self.tail = prev
+            elif (current == self.head):
+                current.next.prev = None
+                self.head = current.next
+            else:
+                prev.next = current.next
+                current.next = prev
+            return
+        prev = current
+        current = current.next
+
+
+    def play(self):
+        return self.head.title + ' by ' + self.head.artist
+
+    def print(self):
+        for node in self.iter():
+            print(node)
     
     def iter(self):
-        # Iterate through the list.
-        current = self.head
-        while current:
-            val = current.title
-            current = current.next
-            yield val
-    
-
-    
-    
-
-
-
-
+        current_title = self.head
+        current_artist = self.head
+        while current_title:
+            iter_title = current_title.title
+            iter_artist = current_artist.artist
+            current_title = current_title.next
+            current_artist = current_artist.next
+            yield iter_title + ' by ' + iter_artist
 
 
 
@@ -100,67 +96,58 @@ def menu():
     print(47 * "-")
 
 
-link = DoublylinkedList()
+link = Dll()
 
-link.addFirst('Sunset', 'The Midnight')
-link.addFirst('Retrograde', 'Silverstein')
-link.addFirst('A Midwestern State of Emergency', 'Silverstein')
-link.addFirst('In Dying Days', 'As Blood Runs Black')
-link.addFirst('Carrion', 'Parkway Drive')
-link.addFirst('The City Sleeps in Flames', 'Scary Kids Scaring Kids')
-
-
+link.add('Sunset', 'The Midnight')
+link.add('Retrograde', 'Silverstein')
+link.add('A Midwestern State of Emergency', 'Silverstein')
+link.add('In Dying Days', 'As Blood Runs Black')
+link.add('Carrion', 'Parkway Drive')
+link.add('The City Sleeps in Flames', 'Scary Kids Scaring Kids')
 
 
+while True:
+    menu()
+    choice = int(input())
 
+    if choice == 1: # DONE
+        title = input("Song Title: ")
+        artist = input("Song Artist: ")
+        link.add(title, artist)
+        print("New Song Added to Playlist")
 
+    elif choice == 2:
+        link.delete(input('Title to remove: '))
+        print("Song Removed to Playlist")
 
+    elif choice == 3: # DONE
+        play = link.play()
+        print("Playing....", play)
 
-# while True:
-#     menu()
-#     choice = int(input())
+    elif choice == 4:
+        skip = link.print()
+        print("Skipping....", skip)
 
-#     if choice == 1:
-#         add_title = input("Song Title: \n")
-#         add_artist = input("Song Artist: \n")
-#         link.addFirst(add_title, add_artist)
-#         print("New Song Added to Playlist")
+    elif choice == 5:
+        # Go back to the previous song on the playlist
+        # Display song name that is now playing
+        print("Replaying....") 
 
-#     elif choice == 2:
-#         remove_title = input("Song Title: \n")
-#         link.remove(remove_title)
-#         print("Song Removed to Playlist")
+    elif choice == 6:
+        # Randomly shuffle the playlist and play the first song
+        # Display song name that is now playing
+        print("Shuffling....") 
 
-#     elif choice == 3:
-#         # Play the playlist from the beginning
-#         # Display song name that is currently playing
-#         print("Playing....")
+    elif choice == 7:
+        # Display the song name and artist of the currently playing song
+        print("Currently playing: ", end=" ")
 
-#     elif choice == 4:
-#         # Skip to the next song on the playlist
-#         # Display song name that is now playing
-#         print("Skipping....")
+    elif choice == 8: # DONE
+        print("Song List: ")
+        ord = link.print()
 
-#     elif choice == 5:
-#         # Go back to the previous song on the playlist
-#         # Display song name that is now playing
-#         print("Replaying....") 
-
-#     elif choice == 6:
-#         # Randomly shuffle the playlist and play the first song
-#         # Display song name that is now playing
-#         print("Shuffling....") 
-
-#     elif choice == 7:
-#         # Display the song name and artist of the currently playing song
-#         print("Currently playing: ", end=" ")
-
-#     elif choice == 8:
-#         # Show the current song list order
-#         print(f"\nSong list: \n")
-
-#     elif choice == 0:
-#         print("Goodbye.")
-#         break
+    elif choice == 0:
+        print("Goodbye.")
+        break
 
             
