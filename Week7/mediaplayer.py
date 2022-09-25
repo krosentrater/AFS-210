@@ -44,28 +44,58 @@ class Dll:
             node.prev = self.tail
             self.tail = node
     
-    def delete(self, title):
-        current = self.head
-        prev = self.head
-        while current:
-            if (current.title == title):
-                prev.next = None
-                self.tail = prev
-            elif (current == self.head):
-                current.next.prev = None
-                self.head = current.next
-            else:
-                prev.next = current.next
-                current.next = prev
+    def delete(self, title): # Resourced this code since I could not get it right on my own ***
+        if self.head is None:
+            print("Playlist is empty.")
             return
-        prev = current
-        current = current.next
+        
+        if self.head.next is None:
+            if self.head.title == None:
+                self.head = None
+            else:
+                print("Item not found.")
+            return
+        
+        if self.head.title == title:
+            self.head = self.head.next
+            self.head.prev = None
+            return
+        
+        n = self.head
+        while n.next is not None:
+            if n.title == title:
+                break
+            n = n.next
+        
+        if n.next is not None:
+            n.prev.next = n.next
+            n.next.prev = n.prev
+        else:
+            if n.title == title:
+                n.prev.next = None
+            else:
+                print("Song not found.")
 
     def skip(self):
         current = self.head
-        val = current.next
+        if self.head is None:
+            print("Playlist is empty!")
+        else:
+            while current is not None:
+                val = current.next
+                self.head = current.next
+                break
         return val
-        
+
+    def goBack(self):
+        current = self.head
+        current.prev = self.head.prev
+        self.head = current.prev
+        return self.head
+    
+    def displayCurrentSong(self):
+        return self.head
+
 
     def play(self):
         return self.head.title + ' by ' + self.head.artist
@@ -124,7 +154,7 @@ while True:
         link.add(title, artist)
         print("New Song Added to Playlist")
 
-    elif choice == 2:
+    elif choice == 2: # DONE
         print("You list currently includes: ")
         current_list = link.print()
         link.delete(input('Title to remove: '))
@@ -134,22 +164,21 @@ while True:
         play = link.play()
         print("Playing....", play)
 
-    elif choice == 4:
+    elif choice == 4: 
         skip = link.skip()
         print("Skipping....", skip)
 
     elif choice == 5:
-        # Go back to the previous song on the playlist
-        # Display song name that is now playing
-        print("Replaying....") 
+        print("Replaying....")
+        print(link.goBack())
 
     elif choice == 6:
         print("Shuffling....") 
-        shuffle = link.shuffle()
 
-    elif choice == 7:
-        # Display the song name and artist of the currently playing song
+    elif choice == 7: # DONE
+        display = link.displayCurrentSong()
         print("Currently playing: ", end=" ")
+        print(display)
 
     elif choice == 8: # DONE
         print("Song List: ")
