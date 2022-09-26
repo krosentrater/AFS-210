@@ -33,78 +33,90 @@ class Dll:
     def __init__(self):
         self.head = None
         self.tail = None
+        self.current = None
 
     def add(self, title, artist):
         node = Song(title, artist)
         if (self.head is None):
             self.head = node
             self.tail = node
+            self.current = node
         else:
             self.tail.next = node
             node.prev = self.tail
             self.tail = node
+            self.current = self.head
     
-    def delete(self, title): # Resourced this code since I could not get it right on my own ***
-        if self.head is None:
+    def delete(self, title): 
+        if self.head is None: 
             print("Playlist is empty.")
             return
         
         if self.head.next is None:
             if self.head.title == None:
                 self.head = None
+                self.currnt = None
             else:
                 print("Item not found.")
             return
         
         if self.head.title == title:
+            self.current = self.head.next
             self.head = self.head.next
             self.head.prev = None
             return
         
-        n = self.head
-        while n.next is not None:
-            if n.title == title:
+        h = self.head
+        while h.next is not None:
+            if h.title == title:
                 break
-            n = n.next
+            h = h.next
         
-        if n.next is not None:
-            n.prev.next = n.next
-            n.next.prev = n.prev
+        if h.next is not None:
+            h.prev.next = h.next
+            h.next.prev = h.prev
+            self.current = h.next
         else:
-            if n.title == title:
-                n.prev.next = None
+            if h.title == title:
+                h.prev.next = None
             else:
                 print("Song not found.")
 
     def skip(self):
-        current = self.head
-        if self.head is None:
-            print("Playlist is empty!")
+        current = self.current.next 
+        if not current: # If current = None
+            current = self.head
+            self.current.next = current.next
         else:
-            while current is not None:
-                val = current.next
-                self.head = current.next
-                break
-        return val
+            self.current.next = current.next
+        return current
+
+
+
+
+
+
+
 
     def goBack(self):
-        current = self.head
-        current.prev = self.head.prev
-        self.head = current.prev
-        return self.head
+        current = self.current.prev
+        if not current:
+        
+            current = self.tail
     
     def displayCurrentSong(self):
-        return self.head
+        return self.current
 
+    def shuffle(self):
+        return 
 
     def play(self):
-        return self.head.title + ' by ' + self.head.artist
+        return self.current
 
     def print(self):
         for node in self.iter():
             print(' - ', node)
 
-    
     def iter(self):
         current_title = self.head
         current_artist = self.head
@@ -164,13 +176,14 @@ while True:
         play = link.play()
         print("Playing....", play)
 
-    elif choice == 4: 
+    elif choice == 4: # DONE
         skip = link.skip()
         print("Skipping....", skip)
 
-    elif choice == 5:
-        print("Replaying....")
-        print(link.goBack())
+    elif choice == 5: # DONE
+        goBack = link.goBack()
+        print("Replaying....", goBack)
+        
 
     elif choice == 6:
         print("Shuffling....") 
