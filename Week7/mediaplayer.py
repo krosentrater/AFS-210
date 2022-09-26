@@ -34,6 +34,7 @@ class Dll:
         self.head = None
         self.tail = None
         self.current = None
+        self.count = 0
 
     def add(self, title, artist):
         node = Song(title, artist)
@@ -41,11 +42,13 @@ class Dll:
             self.head = node
             self.tail = node
             self.current = node
+            self.count += 1
         else:
             self.tail.next = node
             node.prev = self.tail
             self.tail = node
             self.current = self.head
+            self.count += 1
     
     def delete(self, title): 
         if self.head is None: 
@@ -56,6 +59,7 @@ class Dll:
             if self.head.title == None:
                 self.head = None
                 self.currnt = None
+                self.count -= 1
             else:
                 print("Item not found.")
             return
@@ -64,6 +68,7 @@ class Dll:
             self.current = self.head.next
             self.head = self.head.next
             self.head.prev = None
+            self.count -= 1
             return
         
         h = self.head
@@ -76,39 +81,54 @@ class Dll:
             h.prev.next = h.next
             h.next.prev = h.prev
             self.current = h.next
+            self.count -= 1
         else:
             if h.title == title:
                 h.prev.next = None
+                self.count -= 1
             else:
                 print("Song not found.")
 
-    def skip(self):
+    def skip(self): # Traverses forward but skips the head. 
         current = self.current.next 
-        if not current: # If current = None
+        if not current:
             current = self.head
             self.current.next = current.next
-        else:
-            self.current.next = current.next
+        self.current = current
         return current
 
-
-
-
-
-
-
-
-    def goBack(self):
+    def goBack(self): # Traverses backwards, but skips the tail.
         current = self.current.prev
         if not current:
-        
             current = self.tail
+            self.current.prev = current.prev
+        self.current = current
+        return current
     
     def displayCurrentSong(self):
         return self.current
 
     def shuffle(self):
-        return 
+        if (self.head is None):
+            raise Exception("Not enough songs added to playlist to shuffle.")
+        else:
+            current = self.head
+            while (current is not None):
+                length = (self.count - 1)
+                random_index = randint(0, length)
+                random_node = self.getNodeIndex(random_index)
+                current.title, random_node.title = random_node.title, current.title
+                current.artist, random_node.artist = random_node.artist, current.artist
+                current = current.next
+
+    def getNodeIndex(self, index):
+        if index > self.count - 1:
+            raise Exception("Index out of range.")
+        current = self.head
+        for n in range(index):
+            current = current.next
+        return current
+        
 
     def play(self):
         return self.current
@@ -186,7 +206,9 @@ while True:
         
 
     elif choice == 6:
-        print("Shuffling....") 
+        print("Shuffling....")
+        print(link.shuffle())
+
 
     elif choice == 7: # DONE
         display = link.displayCurrentSong()
